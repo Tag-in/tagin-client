@@ -1,13 +1,38 @@
 import AccessButton from "@/components/register/AccessButton";
 import Info from "@/components/register/Info";
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Linking,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const exampleInfo = [
-  { id: "nickname", title: "닉네임", text: "설정 안 함", plan: "" },
+  { id: "nickname", title: "닉네임", text: "", plan: "" },
   { id: "plan", title: "플랜", text: "무료", plan: "Pro 보기" },
 ];
 
 const Successs = () => {
+  const handleToShare = () => {
+    const url = "http://localhost:8081";
+    if (Platform.OS === "web") {
+      window.location.href = url;
+    } else {
+      Linking.openURL(url);
+    }
+  };
+
+  const handleToStart = () => {
+    const url = "http://localhost:8081";
+    if (Platform.OS === "web") {
+      window.location.href = url;
+    } else {
+      Linking.openURL(url);
+    }
+  }
   return (
     <View style={styles.phone}>
       <View style={styles.topContent}>
@@ -36,16 +61,19 @@ const Successs = () => {
 
       <View style={styles.bottomContainer}>
         <View style={styles.buttonContainer}>
-          <AccessButton
-            backgroundColor="#F2F2F2"
-            text="시작하기"
-            textColor="#121212"
-          />
+            <AccessButton
+              backgroundColor="#F2F2F2"
+              text="시작하기"
+              textColor="#121212"
+              onPress={handleToStart}
+            />
         </View>
         <View
           style={{ height: 52, alignItems: "center", justifyContent: "center" }}
         >
-          <Text style={styles.shareNote}>공유 방법 먼저 볼게요</Text>
+          <TouchableOpacity onPress={handleToShare}>
+            <Text style={styles.shareNote}>공유 방법 먼저 볼게요</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
