@@ -1,0 +1,98 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: #1b1b1b;
+}
+
+.card {
+  display: flex;
+  width: 770px;
+  max-width: 100%;
+  min-height: 738px;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 56px 48px 48px;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid #2c2c2c;
+  background: #1e1e1e;
+}
+
+.logoWrap {
+  padding: 0 8px 24px;
+}
+
+.logo {
+  display: block;
+  width: 166px;
+  height: auto;
+}
+
+.heading {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.title {
+  color: #e2e2e2;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #a0a0a0;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.button {
+  display: flex;
+  width: 100%;
+  height: 56px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.google {
+  border: none;
+  background: #ffffff;
+  color: #131314;
+}
+
+.apple {
+  border: 1px solid #a0a0a0;
+  background: #131314;
+  color: #ffffff;
+}
+
+.terms {
+  color: #a0a0a0;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.5;
+  text-align: center;
+}

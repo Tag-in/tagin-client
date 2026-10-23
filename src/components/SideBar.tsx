@@ -12,7 +12,11 @@ const MENUS = [
 const USED_GB = 3.2;
 const TOTAL_GB = 15;
 
-export const SideBar = () => {
+interface SideBarProps {
+  onUpload: () => void;
+}
+
+export const SideBar = ({ onUpload }: SideBarProps) => {
   return (
     <aside className={styles.container}>
       <h1 className={styles.logoWrap}>
@@ -36,7 +40,11 @@ export const SideBar = () => {
           </NavLink>
         ))}
       </nav>
-      <button type="button" className={styles.createButton}>
+      <button
+        type="button"
+        className={styles.createButton}
+        onClick={onUpload}
+      >
         + 새로 만들기 / 업로드
       </button>
       <div className={styles.storage}>

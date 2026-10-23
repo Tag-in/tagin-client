@@ -1,0 +1,160 @@
+.content {
+  display: flex;
+  flex: 1 0 0;
+  min-height: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  gap: 24px;
+  padding: 32px;
+  overflow-y: auto;
+  border-radius: 24px;
+  background: #121212;
+}
+
+.titleRow {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 16px;
+}
+
+.title {
+  color: #e2e2e2;
+  font-size: 40px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.notice {
+  display: flex;
+  width: 100%;
+  flex-shrink: 0;
+  padding: 16px 24px;
+  align-items: center;
+  border-radius: 16px;
+  border: 1px solid #2c2c2c;
+  background: #1e1e1e;
+}
+
+.noticeText {
+  color: #e2e2e2;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.table {
+  display: flex;
+  width: 100%;
+  flex-shrink: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid #2c2c2c;
+}
+
+.row {
+  display: flex;
+  height: 56px;
+  flex-shrink: 0;
+  padding: 0 24px;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid #2c2c2c;
+}
+
+.headerRow {
+  height: 44px;
+  background: #1e1e1e;
+  color: #a0a0a0;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.rowActive {
+  background: #1e1e1e;
+}
+
+.nameCol {
+  display: flex;
+  min-width: 0;
+  flex: 1 0 0;
+  align-items: center;
+  gap: 12px;
+}
+
+.locationCol {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.dateCol {
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.sizeCol {
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.cell {
+  color: #a0a0a0;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.check {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  border: 1.5px solid #a0a0a0;
+}
+
+.rowActive .check {
+  background: #a0a0a0;
+}
+
+.fileName {
+  overflow: hidden;
+  color: #e2e2e2;
+  font-size: 16px;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowActive .fileName {
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+}
+
+.button {
+  display: flex;
+  height: 44px;
+  flex-shrink: 0;
+  padding: 0 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid #a0a0a0;
+  background: transparent;
+  color: #e2e2e2;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.selectedCount {
+  padding-left: 8px;
+  color: #a0a0a0;
+  font-size: 14px;
+  font-weight: 300;
+  white-space: nowrap;
+}

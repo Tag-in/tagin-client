@@ -1,3 +1,5 @@
-<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4.5 5.5H15.5M8 5.5V4H12V5.5M5.8 5.5L6.5 16H13.5L14.2 5.5M8.5 8.5V13M11.5 8.5V13" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon">
+<path id="Vector" d="M14.1304 6.52174V17.3913H5.43478V6.52174H14.1304ZM12.5 3.27826e-07H7.06522L5.97826 1.08696H2.17391V3.26087H17.3913V1.08696H13.587L12.5 3.27826e-07ZM16.3043 4.34783H3.26087V17.3913C3.26087 18.587 4.23913 19.5652 5.43478 19.5652H14.1304C15.3261 19.5652 16.3043 18.587 16.3043 17.3913V4.34783Z" fill="#A0A0A0"/>
+</g>
 </svg>

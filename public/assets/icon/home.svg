@@ -1,3 +1,10 @@
-<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M10 2.5L2 9.5H4.2V17H8.3V12.4H11.7V17H15.8V9.5H18L10 2.5Z" fill="#000"/>
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon" clip-path="url(#clip0_0_6)">
+<path id="Vector" d="M8 18.2V12.2H12V18.2H17V10.2H20L10 1.2L-1.49012e-07 10.2H3V18.2H8Z" fill="#A5B4FC"/>
+</g>
+<defs>
+<clipPath id="clip0_0_6">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
 </svg>

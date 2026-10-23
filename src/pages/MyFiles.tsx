@@ -52,9 +52,7 @@ const ACTIONS = ["다운로드", "공유", "이동", "삭제"];
 
 const MyFiles = () => {
   const [folderId, setFolderId] = useState("design");
-  const [selectedName, setSelectedName] = useState<string | null>(
-    "메인화면_시안.fig",
-  );
+  const [selectedName, setSelectedName] = useState<string | null>(null);
 
   const path = findTreePath(TREE, folderId) ?? [];
   const selectedFile = FILES.find((file) => file.name === selectedName);

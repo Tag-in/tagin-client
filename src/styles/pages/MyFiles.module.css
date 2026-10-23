@@ -95,7 +95,7 @@
 }
 
 .rowActive {
-  background: #1e1e1e;
+  background: #2F3056;
 }
 
 .nameCol {
@@ -136,7 +136,8 @@
 }
 
 .rowActive .check {
-  background: #a0a0a0;
+  background: #6366F1;
+  border: 1.5px solid #6366F1;
 }
 
 .fileName {

@@ -1,28 +1,28 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router'
-import { SideBar } from './components/SideBar.tsx'
+import Shell from './layouts/Shell.tsx'
 import Home from './pages/Home.tsx'
 import Important from './pages/Important.tsx'
+import Login from './pages/Login.tsx'
 import MyFiles from './pages/MyFiles.tsx'
 import Recent from './pages/Recent.tsx'
 import Trash from './pages/Trash.tsx'
-import styles from './styles/app.module.css'
 import './styles/global.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <div className={styles.container}>
-        <SideBar />
-        <Routes>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route element={<Shell />}>
           <Route path="/" element={<Home />} />
           <Route path="/files" element={<MyFiles />} />
           <Route path="/recent" element={<Recent />} />
           <Route path="/important" element={<Important />} />
           <Route path="/trash" element={<Trash />} />
-        </Routes>
-      </div>
+        </Route>
+      </Routes>
     </BrowserRouter>
   </StrictMode>,
 )

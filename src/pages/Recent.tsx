@@ -1,10 +1,10 @@
-import { ContentPanel } from "../components/ContentPanel";
+import { EmptyContent } from "../components/EmptyContent";
 import { MainColumn } from "../components/MainColumn";
 
 const Recent = () => {
   return (
     <MainColumn>
-      <ContentPanel title="최근" />
+      <EmptyContent />
     </MainColumn>
   );
 };
