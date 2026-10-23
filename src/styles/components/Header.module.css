@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  max-width: 1640px;
+  width: 100%;
+  align-items: center;
+  gap: 629px;
+  height: 88px;
+  background: #1B1B1B;
+}
+
+.searchWrap {
+  display: flex;
+  max-width: 880px;
+  width: 100%;
+  padding: 14px 16px;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1px solid #a0a0a0;
+  background: #1b1b1b;
+}
+
+.actionWrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.settingWrap {
+  display: flex;
+  width: 44px;
+  height: 44px;
+  justify-content: center;
+  align-items: center;
+}
+
+.settingIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.profile {
+  display: flex;
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  border: 1.5px solid #a0a0a0;
+  color: #a0a0a0;
+}
