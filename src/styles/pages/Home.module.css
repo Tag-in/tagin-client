@@ -73,6 +73,7 @@
   border-radius: 8px;
   border: 1px solid #a0a0a0;
   background: transparent;
+  cursor: pointer;
 }
 
 .fixDateArrow {
@@ -100,6 +101,7 @@
 
 .option {
   display: flex;
+  cursor: pointer;
   height: 40px;
   padding: 10.5px 16px;
   justify-content: center;

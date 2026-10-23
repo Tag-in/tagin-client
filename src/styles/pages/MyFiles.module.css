@@ -84,6 +84,7 @@
   align-items: center;
   gap: 16px;
   border-bottom: 1px solid #2c2c2c;
+  cursor: pointer;
 }
 
 .headerRow {

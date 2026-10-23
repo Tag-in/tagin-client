@@ -5,7 +5,7 @@ import { FileCard } from "../components/FileCard";
 import { MainColumn } from "../components/MainColumn";
 
 const FOLDERS = ["운동", "게임", "요리", "음악", "예능"];
-const VIEW_MODES = ["그리드", "리스트"];
+const VIEW_MODES = ["그리드", "중요", "최근"];
 // TODO: 최근 파일 API 연동 전 임시 데이터
 const RECENT_FILES = [
   { name: "기획서_v3.pdf", date: "10월 24일", owner: "나" },

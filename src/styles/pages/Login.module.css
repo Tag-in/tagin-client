@@ -9,14 +9,12 @@
 
 .card {
   display: flex;
-  width: 770px;
-  max-width: 100%;
-  min-height: 738px;
+  width: 520px;
+  padding: 56px 48px 48px 48px;
   flex-direction: column;
   align-items: center;
   gap: 28px;
-  padding: 56px 48px 48px;
-  overflow: hidden;
+  flex-shrink: 0;
   border-radius: 24px;
   border: 1px solid #2c2c2c;
   background: #1e1e1e;
@@ -70,6 +68,7 @@
   border-radius: 12px;
   font-size: 18px;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .icon {
