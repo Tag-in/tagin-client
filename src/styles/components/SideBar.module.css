@@ -1,15 +1,15 @@
 .container {
   display: flex;
-  width: 268px;
+  width: 280px;
   flex-shrink: 0;
   flex-direction: column;
-  padding: 30px 15px;
+  padding: 24px 16px 0;
   background: #1b1b1b;
 }
 
 .logoWrap {
-  margin: 0;
-  padding: 20px 8px;
+  margin: 0 0 24px;
+  padding: 12px 8px;
 }
 
 .logo {
@@ -27,10 +27,10 @@
 
 .menu {
   display: flex;
-  height: 42px;
+  height: 44px;
   padding: 0 12px;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   border: none;
   border-radius: 8px;
   background: transparent;
@@ -70,7 +70,7 @@
 }
 
 .createButton {
-  height: 46px;
+  height: 48px;
   margin-top: 24px;
   border: none;
   border-radius: 8px;
@@ -86,7 +86,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: 20px;
+  margin-top: 24px;
   padding: 0 8px;
 }
 
