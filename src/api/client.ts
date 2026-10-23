@@ -23,8 +23,12 @@ const refresh = (): Promise<boolean> => {
 }
 
 // Access Token을 붙여 요청하고, 401이면 재발급 후 한 번 다시 보낸다. 재발급도 실패하면 로그인 화면으로 보낸다.
-export const authFetch = async (path: string): Promise<Response> => {
-    const send = () => fetch(path, { headers: { Authorization: `Bearer ${getAccessToken()}` } })
+export const authFetch = async (path: string, init: RequestInit = {}): Promise<Response> => {
+    const send = () => {
+        const headers = new Headers(init.headers)
+        headers.set('Authorization', `Bearer ${getAccessToken()}`)
+        return fetch(path, { ...init, headers })
+    }
 
     const response = await send()
     if (response.status !== 401) return response
