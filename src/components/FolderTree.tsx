@@ -6,6 +6,8 @@ interface FolderTreeProps {
   nodes: TreeNode[];
   selectedId: string;
   defaultExpanded: string[];
+  // 바뀔 때마다 펼쳐 둘 폴더 (선택한 폴더의 상위 폴더 등)
+  revealIds?: string[];
   onSelect: (id: string) => void;
 }
 
@@ -13,11 +15,19 @@ export const FolderTree = ({
   nodes,
   selectedId,
   defaultExpanded,
+  revealIds = [],
   onSelect,
 }: FolderTreeProps) => {
   const [expanded, setExpanded] = useState<Set<string>>(
-    () => new Set(defaultExpanded),
+    () => new Set([...defaultExpanded, ...revealIds]),
   );
+
+  const revealKey = revealIds.join("/");
+  const [revealed, setRevealed] = useState(revealKey);
+  if (revealed !== revealKey) {
+    setRevealed(revealKey);
+    setExpanded((prev) => new Set([...prev, ...revealIds]));
+  }
 
   const toggle = (id: string) => {
     setExpanded((prev) => {
