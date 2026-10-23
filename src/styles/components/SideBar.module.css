@@ -1,0 +1,109 @@
+.container {
+  display: flex;
+  width: 268px;
+  flex-shrink: 0;
+  flex-direction: column;
+  padding: 30px 15px;
+  background: #1b1b1b;
+}
+
+.logoWrap {
+  margin: 0;
+  padding: 20px 8px;
+}
+
+.logo {
+  display: block;
+  width: 100%;
+  max-width: 166px;
+  height: auto;
+}
+
+.menuList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu {
+  display: flex;
+  height: 42px;
+  padding: 0 12px;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #a0a0a0;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.menu:hover {
+  background: #262626;
+}
+
+.active {
+  background: #343252;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  background-color: #a0a0a0;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+
+.active,
+.active:hover {
+  background: #343252;
+}
+
+.active .icon {
+  background-color: #b8b4ff;
+}
+
+.createButton {
+  height: 46px;
+  margin-top: 24px;
+  border: none;
+  border-radius: 8px;
+  background: #6e66e8;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.storage {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 0 8px;
+}
+
+.storageBar {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #2c2c2c;
+}
+
+.storageFill {
+  height: 100%;
+  border-radius: 4px;
+  background: #6e66e8;
+}
+
+.storageText {
+  color: #8a8a8a;
+  font-size: 11px;
+}
