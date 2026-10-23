@@ -1,9 +1,17 @@
+import { useLocation } from 'react-router'
 import styles from '../styles/components/Header.module.css'
 
+const DEFAULT_PLACEHOLDER = '파일, 폴더 검색'
+const PLACEHOLDERS: Record<string, string> = {
+    '/trash': '휴지통에서 검색',
+}
+
 export const Header = () => {
+    const { pathname } = useLocation()
+
     return (
         <div className={styles.container}>
-            <input type='search' className={styles.searchWrap} placeholder='파일, 폴더 검색'></input>
+            <input type='search' className={styles.searchWrap} placeholder={PLACEHOLDERS[pathname] ?? DEFAULT_PLACEHOLDER}></input>
             <div className={styles.actionWrap}>
                 <div className={styles.settingWrap}>
                     <img src='/assets/icon/settings.svg' alt='설정' className={styles.settingIcon} />

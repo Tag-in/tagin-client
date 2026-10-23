@@ -39,6 +39,7 @@
   font-family: inherit;
   cursor: pointer;
   text-align: left;
+  text-decoration: none;
 }
 
 .menu:hover {

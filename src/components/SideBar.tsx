@@ -1,39 +1,39 @@
-import { useState } from "react";
+import { NavLink } from "react-router";
 import styles from "../styles/components/SideBar.module.css";
 
 const MENUS = [
-  { id: "home", label: "홈", icon: "home" },
-  { id: "files", label: "내 파일", icon: "folder" },
-  { id: "recent", label: "최근", icon: "clock" },
-  { id: "important", label: "중요", icon: "star" },
-  { id: "trash", label: "휴지통", icon: "trash" },
+  { path: "/", label: "홈", icon: "home" },
+  { path: "/files", label: "내 파일", icon: "folder" },
+  { path: "/recent", label: "최근", icon: "clock" },
+  { path: "/important", label: "중요", icon: "star" },
+  { path: "/trash", label: "휴지통", icon: "trash" },
 ];
 
 const USED_GB = 3.2;
 const TOTAL_GB = 15;
 
 export const SideBar = () => {
-  const [active, setActive] = useState("files");
-
   return (
     <aside className={styles.container}>
       <h1 className={styles.logoWrap}>
         <img src="/assets/icon/TAG-IN.svg" alt="TAG-IN" className={styles.logo} />
       </h1>
       <nav className={styles.menuList}>
-        {MENUS.map(({ id, label, icon }) => (
-          <button
-            key={id}
-            type="button"
-            className={`${styles.menu} ${active === id ? styles.active : ""}`}
-            onClick={() => setActive(id)}
+        {MENUS.map(({ path, label, icon }) => (
+          <NavLink
+            key={path}
+            to={path}
+            end={path === "/"}
+            className={({ isActive }) =>
+              `${styles.menu} ${isActive ? styles.active : ""}`
+            }
           >
             <span
               className={styles.icon}
               style={{ maskImage: `url(/assets/icon/${icon}.svg)` }}
             />
             {label}
-          </button>
+          </NavLink>
         ))}
       </nav>
       <button type="button" className={styles.createButton}>

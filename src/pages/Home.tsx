@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "../styles/pages/Home.module.css";
-import { Header } from "../components/Header";
-import { SideBar } from "../components/SideBar";
 import { FolderCard } from "../components/FolderCard";
 import { FileCard } from "../components/FileCard";
 
@@ -38,90 +36,84 @@ const Home = () => {
   }, [isViewOpen]);
 
   return (
-    <div className={styles.container}>
-      <SideBar />
-      <div className={styles.main}>
-        <Header />
-        <div className={styles.content}>
-          <p className={styles.title}>홈</p>
-          <div className={styles.toolBar}>
-            <div className={styles.buttonWrap}>
-              <button
-                type="button"
-                className={styles.fixDateWrap}
-                onClick={() => setIsDateDesc((prev) => !prev)}
+    <div className={styles.content}>
+      <p className={styles.title}>홈</p>
+      <div className={styles.toolBar}>
+        <div className={styles.buttonWrap}>
+          <button
+            type="button"
+            className={styles.fixDateWrap}
+            onClick={() => setIsDateDesc((prev) => !prev)}
+          >
+            <span className={styles.fixDateText}>수정 날짜</span>
+            <span
+              className={`${styles.fixDateArrow} ${isDateDesc ? "" : styles.fixDateArrowUp}`}
+            >
+              ▾
+            </span>
+          </button>
+          <div className={styles.optionWrap} ref={viewRef}>
+            <button
+              type="button"
+              className={styles.option}
+              aria-haspopup="listbox"
+              aria-expanded={isViewOpen}
+              onClick={() => setIsViewOpen((prev) => !prev)}
+            >
+              <span className={styles.optionText}>{viewMode}</span>
+              <span
+                className={`${styles.fixDateArrow} ${isViewOpen ? styles.fixDateArrowUp : ""}`}
               >
-                <span className={styles.fixDateText}>수정 날짜</span>
-                <span
-                  className={`${styles.fixDateArrow} ${isDateDesc ? "" : styles.fixDateArrowUp}`}
-                >
-                  ▾
-                </span>
-              </button>
-              <div className={styles.optionWrap} ref={viewRef}>
-                <button
-                  type="button"
-                  className={styles.option}
-                  aria-haspopup="listbox"
-                  aria-expanded={isViewOpen}
-                  onClick={() => setIsViewOpen((prev) => !prev)}
-                >
-                  <span className={styles.optionText}>{viewMode}</span>
-                  <span
-                    className={`${styles.fixDateArrow} ${isViewOpen ? styles.fixDateArrowUp : ""}`}
-                  >
-                    ▾
-                  </span>
-                </button>
-                {isViewOpen && (
-                  <ul className={styles.dropdown} role="listbox">
-                    {VIEW_MODES.map((mode) => (
-                      <li key={mode} role="option" aria-selected={mode === viewMode}>
-                        <button
-                          type="button"
-                          className={`${styles.dropdownItem} ${mode === viewMode ? styles.dropdownItemActive : ""}`}
-                          onClick={() => {
-                            setViewMode(mode);
-                            setIsViewOpen(false);
-                          }}
-                        >
-                          {mode}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </div>
+                ▾
+              </span>
+            </button>
+            {isViewOpen && (
+              <ul className={styles.dropdown} role="listbox">
+                {VIEW_MODES.map((mode) => (
+                  <li key={mode} role="option" aria-selected={mode === viewMode}>
+                    <button
+                      type="button"
+                      className={`${styles.dropdownItem} ${mode === viewMode ? styles.dropdownItemActive : ""}`}
+                      onClick={() => {
+                        setViewMode(mode);
+                        setIsViewOpen(false);
+                      }}
+                    >
+                      {mode}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          <div className={styles.folderList}>
-            {FOLDERS.map((name) => (
-              <FolderCard
-                key={name}
-                name={name}
-                fileCount={0}
-                checked={selected === name}
-                onToggle={() => setSelected(selected === name ? null : name)}
-              />
-            ))}
-          </div>
-          <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>최근 파일</h2>
-            <div className={styles.fileList}>
-              {RECENT_FILES.map(({ name, date, owner }) => (
-                <FileCard
-                  key={name}
-                  name={name}
-                  date={date}
-                  owner={owner}
-                  checked={selected === name}
-                  onToggle={() => setSelected(selected === name ? null : name)}
-                />
-              ))}
-            </div>
-          </section>
         </div>
       </div>
+      <div className={styles.folderList}>
+        {FOLDERS.map((name) => (
+          <FolderCard
+            key={name}
+            name={name}
+            fileCount={0}
+            checked={selected === name}
+            onToggle={() => setSelected(selected === name ? null : name)}
+          />
+        ))}
+      </div>
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>최근 파일</h2>
+        <div className={styles.fileList}>
+          {RECENT_FILES.map(({ name, date, owner }) => (
+            <FileCard
+              key={name}
+              name={name}
+              date={date}
+              owner={owner}
+              checked={selected === name}
+              onToggle={() => setSelected(selected === name ? null : name)}
+            />
+          ))}
+        </div>
+      </section>
     </div>
   );
 };
