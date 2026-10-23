@@ -31,7 +31,7 @@ const Term = ({
   useEffect(() => {
     Animated.timing(rotation, {
       toValue: isDetail ? 1 : 0,
-      duration: 200,
+      duration: 150,
       useNativeDriver: false,
     }).start();
   }, [isDetail, rotation]);

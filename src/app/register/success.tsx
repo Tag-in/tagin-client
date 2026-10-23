@@ -179,6 +179,8 @@ const styles = StyleSheet.create({
     gap: 26,
   },
   infoContainer: {
+    width: "100%",
+    maxWidth: 354,
     marginTop: 34,
   },
 });
