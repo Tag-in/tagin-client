@@ -17,7 +17,9 @@ export const SideBar = () => {
 
   return (
     <aside className={styles.container}>
-      <h1 className={styles.logo}>TAG-IN</h1>
+      <h1 className={styles.logoWrap}>
+        <img src="/assets/icon/TAG-IN.svg" alt="TAG-IN" className={styles.logo} />
+      </h1>
       <nav className={styles.menuList}>
         {MENUS.map(({ id, label, icon }) => (
           <button

@@ -3,8 +3,10 @@
   max-width: 1640px;
   width: 100%;
   align-items: center;
-  gap: 629px;
-  height: 88px;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 24px;
+  height: 76px;
   background: #1B1B1B;
 }
 
