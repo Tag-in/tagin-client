@@ -1,6 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router'
+import PublicOnly from './layouts/PublicOnly.tsx'
+import RequireAuth from './layouts/RequireAuth.tsx'
 import Shell from './layouts/Shell.tsx'
 import GoogleCallback from './pages/GoogleCallback.tsx'
 import Home from './pages/Home.tsx'
@@ -16,15 +18,19 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route element={<PublicOnly />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Route>
         <Route path="/auth/google/callback" element={<GoogleCallback />} />
-        <Route element={<Shell />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/files" element={<MyFiles />} />
-          <Route path="/recent" element={<Recent />} />
-          <Route path="/important" element={<Important />} />
-          <Route path="/trash" element={<Trash />} />
+        <Route element={<RequireAuth />}>
+          <Route element={<Shell />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/files" element={<MyFiles />} />
+            <Route path="/recent" element={<Recent />} />
+            <Route path="/important" element={<Important />} />
+            <Route path="/trash" element={<Trash />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

@@ -6,9 +6,15 @@ export const GOOGLE_TOKEN_MESSAGE = "google-id-token";
 // 팝업으로 Google 로그인을 진행하고 ID 토큰(JWT)을 받아온다.
 export const getGoogleIdToken = (): Promise<string> =>
   new Promise((resolve, reject) => {
-    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    const clientId =
+      import.meta.env.VITE_GOOGLE_CLIENT_ID ??
+      import.meta.env.GOOGLE_WEB_CLIENT_ID;
     if (!clientId) {
-      reject(new Error("VITE_GOOGLE_CLIENT_ID가 설정되지 않았습니다."));
+      reject(new Error("Google 클라이언트 ID가 설정되지 않았습니다. (.env의 VITE_GOOGLE_CLIENT_ID)"));
+      return;
+    }
+    if (!clientId.endsWith(".apps.googleusercontent.com") || clientId.startsWith("your-")) {
+      reject(new Error("Google 클라이언트 ID가 예시 값입니다. 실제 웹 클라이언트 ID로 바꿔 주세요."));
       return;
     }
 
