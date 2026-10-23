@@ -108,6 +108,8 @@ const styles = StyleSheet.create({
   },
   topContent: {
     flex: 1,
+    width: "100%",
+    paddingHorizontal: 24,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -140,7 +142,8 @@ const styles = StyleSheet.create({
     borderRadius: 28,
   },
   checkContainer: {
-    width: 354,
+    width: "100%",
+    maxWidth: 354,
     display: "flex",
     flexDirection: "column",
   },
@@ -171,7 +174,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "flex-start",
-    width: 354,
+    width: "100%",
+    maxWidth: 354,
     gap: 26,
   },
   infoContainer: {

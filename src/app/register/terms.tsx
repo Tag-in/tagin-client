@@ -106,7 +106,10 @@ const Terms = () => {
                 필수 항목에 동의하면 바로 시작할 수 있어요.
               </Text>
             </View>
-            <TouchableOpacity onPress={toggleSetCheckAll}>
+            <TouchableOpacity
+            onPress={toggleSetCheckAll}
+            style={styles.checkAllTouchable}
+          >
               <View style={styles.checkAllContainer}>
                 <View
                   style={[
@@ -189,6 +192,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   topContent: {
+    width: "100%",
+    paddingHorizontal: 24,
     alignItems: "center",
   },
   bottomContainer: {
@@ -205,11 +210,12 @@ const styles = StyleSheet.create({
   },
   noteContainer: {
     display: "flex",
-    width: 354,
+    width: "100%",
+    maxWidth: 354,
     flexDirection: "column",
     alignItems: "flex-start",
     marginTop: 17.09,
-    marginInline: 24,
+    marginBottom: 20,
   },
   checkAllBox: {
     width: 22,
@@ -227,9 +233,14 @@ const styles = StyleSheet.create({
   unCheck: {
     opacity: 0.4,
   },
+  checkAllTouchable: {
+    width: "100%",
+    maxWidth: 359,
+  },
   checkAllContainer: {
-    width: 359,
-    height: 54,
+    width: "100%",
+    maxWidth: 359,
+    minHeight: 54,
     backgroundColor: "#1A1A1A",
     display: "flex",
     flexDirection: "row",
@@ -248,8 +259,9 @@ const styles = StyleSheet.create({
     letterSpacing: -0.155,
   },
   titleContainer: {
-    width: 354,
-    height: 64.8,
+    width: "100%",
+    maxWidth: 354,
+    minHeight: 64.8,
     display: "flex",
     flexDirection: "column",
     gap: 8.8,

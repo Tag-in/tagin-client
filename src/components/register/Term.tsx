@@ -19,7 +19,7 @@ const Term = ({
   onDetailTextToggle,
 }: TermProps) => {
   return (
-    <View>
+    <View style={styles.root}>
       <View
         style={[
           styles.termContainer,
@@ -31,7 +31,10 @@ const Term = ({
             : undefined,
         ]}
       >
-        <TouchableOpacity onPress={onDetailTextToggle}>
+        <TouchableOpacity
+          onPress={onDetailTextToggle}
+          style={styles.touchable}
+        >
           <View style={styles.container}>
             <View style={styles.leftContainer}>
               <TouchableOpacity onPress={onToggle}>
@@ -74,10 +77,18 @@ const BASE = {
 } as const;
 
 const styles = StyleSheet.create({
+  touchable: {
+    width: "100%",
+  },
+  root: {
+    width: "100%",
+    maxWidth: 354,
+  },
   container: {
     display: "flex",
-    width: 354,
-    height: 30,
+    width: "100%",
+    maxWidth: 354,
+    minHeight: 30,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -106,7 +117,8 @@ const styles = StyleSheet.create({
     fontWeight: 500,
   },
   textDetailContainer: {
-    width: 354,
+    width: "100%",
+    maxWidth: 354,
     paddingInline: 18.5,
     paddingBottom: 16,
     borderBottomColor: "#202020",
@@ -149,7 +161,8 @@ const styles = StyleSheet.create({
   },
   termContainer: {
     display: "flex",
-    width: 354,
+    width: "100%",
+    maxWidth: 354,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",

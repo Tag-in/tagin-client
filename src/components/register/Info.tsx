@@ -52,8 +52,9 @@ const BASE = {
 
 const styles = StyleSheet.create({
   infoContainer: {
-    width: 354,
-    height: 48,
+    width: "100%",
+    maxWidth: 354,
+    minHeight: 48,
     display: "flex",
     flexDirection: "row",
     gap: 12,

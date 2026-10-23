@@ -120,7 +120,8 @@ const styles = StyleSheet.create({
   },
   titleWrap: {
     display: "flex",
-    width: 163,
+    width: "100%",
+    maxWidth: 163,
     paddingBottom: 12,
     flexDirection: "column",
     alignItems: "flex-start",
