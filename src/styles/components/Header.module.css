@@ -57,3 +57,76 @@
   border: 1.5px solid #a0a0a0;
   color: #a0a0a0;
 }
+
+.profileWrap {
+  position: relative;
+}
+
+.profile {
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 20;
+  display: flex;
+  min-width: 220px;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid #2c2c2c;
+  background: #1e1e1e;
+}
+
+.menuInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #2c2c2c;
+}
+
+.menuName {
+  color: #e2e2e2;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.menuEmail {
+  overflow: hidden;
+  color: #a0a0a0;
+  font-size: 12px;
+  font-weight: 300;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menuItem {
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #e2e2e2;
+  font-size: 14px;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menuItem:hover {
+  background: #262626;
+}

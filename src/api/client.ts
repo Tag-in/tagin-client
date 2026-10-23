@@ -23,8 +23,12 @@ const refresh = (): Promise<boolean> => {
 }
 
 // Access Token을 붙여 요청하고, 401이면 재발급 후 한 번 다시 보낸다. 재발급도 실패하면 로그인 화면으로 보낸다.
-export const authFetch = async (path: string): Promise<Response> => {
-    const send = () => fetch(path, { headers: { Authorization: `Bearer ${getAccessToken()}` } })
+export const authFetch = async (path: string, init: RequestInit = {}): Promise<Response> => {
+    const send = () => {
+        const headers = new Headers(init.headers)
+        headers.set('Authorization', `Bearer ${getAccessToken()}`)
+        return fetch(path, { ...init, headers })
+    }
 
     const response = await send()
     if (response.status !== 401) return response
@@ -35,3 +39,34 @@ export const authFetch = async (path: string): Promise<Response> => {
     window.location.assign('/login')
     return response
 }
+
+export class ApiError extends Error {
+    readonly status: number
+    readonly body: Record<string, unknown>
+
+    constructor(status: number, message: string, body: Record<string, unknown>) {
+        super(message)
+        this.status = status
+        this.body = body
+    }
+}
+
+// 응답 본문을 읽고, 실패면 서버 메시지로 ApiError를 던진다.
+export const readJson = async <T>(response: Response, fallback: string): Promise<T> => {
+    const text = await response.text()
+    const data = text ? JSON.parse(text) : {}
+
+    if (!response.ok) {
+        const message = Array.isArray(data.message) ? data.message.join(', ') : data.message
+        throw new ApiError(response.status, message ?? `${fallback} (${response.status})`, data)
+    }
+
+    return data
+}
+
+export const postJson = (path: string, body: unknown) =>
+    authFetch(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+    })

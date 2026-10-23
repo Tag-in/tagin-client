@@ -153,3 +153,32 @@
 .rowActive .fileName {
   font-weight: 700;
 }
+
+.button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.status {
+  min-width: 0;
+  padding-left: 8px;
+  overflow: hidden;
+  color: #e2e2e2;
+  font-size: 14px;
+  font-weight: 300;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message {
+  padding: 24px;
+  color: #a0a0a0;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.rowIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}

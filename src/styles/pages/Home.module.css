@@ -155,3 +155,9 @@
   color: #e2e2e2;
   font-weight: 700;
 }
+
+.message {
+  color: #a0a0a0;
+  font-size: 14px;
+  font-weight: 300;
+}
