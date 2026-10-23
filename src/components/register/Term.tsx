@@ -1,4 +1,12 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useRef } from "react";
+import {
+  Animated,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface TermProps {
   isRequire: boolean;
@@ -18,8 +26,23 @@ const Term = ({
   onToggle,
   onDetailTextToggle,
 }: TermProps) => {
+  const rotation = useRef(new Animated.Value(isDetail ? 1 : 0)).current;
+
+  useEffect(() => {
+    Animated.timing(rotation, {
+      toValue: isDetail ? 1 : 0,
+      duration: 150,
+      useNativeDriver: false,
+    }).start();
+  }, [isDetail, rotation]);
+
+  const arrowRotate = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "90deg"],
+  });
+
   return (
-    <View>
+    <View style={styles.root}>
       <View
         style={[
           styles.termContainer,
@@ -31,7 +54,10 @@ const Term = ({
             : undefined,
         ]}
       >
-        <TouchableOpacity onPress={onDetailTextToggle}>
+        <TouchableOpacity
+          onPress={onDetailTextToggle}
+          style={styles.touchable}
+        >
           <View style={styles.container}>
             <View style={styles.leftContainer}>
               <TouchableOpacity onPress={onToggle}>
@@ -51,9 +77,9 @@ const Term = ({
                 <Text style={styles.text}>{text}</Text>
               </Text>
             </View>
-            <Image
+            <Animated.Image
               source={require("@/assets/images/icons/arrow-icon.svg")}
-              style={styles.arrow}
+              style={[styles.arrow, { transform: [{ rotate: arrowRotate }] }]}
             />
           </View>
         </TouchableOpacity>
@@ -74,10 +100,18 @@ const BASE = {
 } as const;
 
 const styles = StyleSheet.create({
+  touchable: {
+    width: "100%",
+  },
+  root: {
+    width: "100%",
+    maxWidth: 354,
+  },
   container: {
     display: "flex",
-    width: 354,
-    height: 30,
+    width: "100%",
+    maxWidth: 354,
+    minHeight: 30,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -106,7 +140,8 @@ const styles = StyleSheet.create({
     fontWeight: 500,
   },
   textDetailContainer: {
-    width: 354,
+    width: "100%",
+    maxWidth: 354,
     paddingInline: 18.5,
     paddingBottom: 16,
     borderBottomColor: "#202020",
@@ -149,7 +184,8 @@ const styles = StyleSheet.create({
   },
   termContainer: {
     display: "flex",
-    width: 354,
+    width: "100%",
+    maxWidth: 354,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",

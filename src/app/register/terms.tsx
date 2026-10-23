@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Terms = () => {
   const [checks, setChecks] = useState<Record<string, boolean>>({});
@@ -91,74 +92,87 @@ const Terms = () => {
   };
 
   return (
-    <View style={styles.phone}>
-      <ScrollView
-        style={styles.scroll}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.topContent}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>약관에 동의해 주세요</Text>
-            <Text style={styles.titleNote}>
-              필수 항목에 동의하면 바로 시작할 수 있어요.
-            </Text>
-          </View>
-          <TouchableOpacity onPress={toggleSetCheckAll}>
-            <View style={styles.checkAllContainer}>
-              <View
-                style={[
-                  styles.checkAllBox,
-                  checkAll ? styles.check : styles.unCheck,
-                ]}
-              >
-                <Image
-                  source={require("@/assets/images/icons/check-icon.svg")}
-                  style={checkAll ? undefined : styles.unCheck}
-                />
-              </View>
-              <Text style={styles.checkAllText}>전체 동의</Text>
+    <SafeAreaView style={styles.screen}>
+      <View style={styles.phone}>
+        <ScrollView
+          style={styles.scroll}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.topContent}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>약관에 동의해 주세요</Text>
+              <Text style={styles.titleNote}>
+                필수 항목에 동의하면 바로 시작할 수 있어요.
+              </Text>
             </View>
-          </TouchableOpacity>
-          {ex.map((e) => (
-            <Term
-              key={e.id}
-              isRequire={e.isRequire}
-              text={e.text}
-              text_detail={e.text_detail}
-              isCheck={e.isCheck}
-              isDetail={e.isDetail}
-              onToggle={e.onToggle}
-              onDetailTextToggle={e.onDetailTextToggle}
-            />
-          ))}
-          <View style={styles.noteContainer}>
-            <Text style={styles.note}>
-              만 14세 미만 보호자 동의가 필요합니다. 선택 항목에 동의하지 않아도
-              서비스를 이용할 수 있어요.
-            </Text>
+            <TouchableOpacity
+            onPress={toggleSetCheckAll}
+            style={styles.checkAllTouchable}
+          >
+              <View style={styles.checkAllContainer}>
+                <View
+                  style={[
+                    styles.checkAllBox,
+                    checkAll ? styles.check : styles.unCheck,
+                  ]}
+                >
+                  <Image
+                    source={require("@/assets/images/icons/check-icon.svg")}
+                    style={checkAll ? undefined : styles.unCheck}
+                  />
+                </View>
+                <Text style={styles.checkAllText}>전체 동의</Text>
+              </View>
+            </TouchableOpacity>
+            {ex.map((e) => (
+              <Term
+                key={e.id}
+                isRequire={e.isRequire}
+                text={e.text}
+                text_detail={e.text_detail}
+                isCheck={e.isCheck}
+                isDetail={e.isDetail}
+                onToggle={e.onToggle}
+                onDetailTextToggle={e.onDetailTextToggle}
+              />
+            ))}
+            <View style={styles.noteContainer}>
+              <Text style={styles.note}>
+                만 14세 미만 보호자 동의가 필요합니다. 선택 항목에 동의하지
+                않아도 서비스를 이용할 수 있어요.
+              </Text>
+            </View>
           </View>
-        </View>
 
-        <View style={styles.bottomContainer}>
-          <AccessButton
-            backgroundColor={checkAllRequire ? "#F2F2F2" : "#1E1E1E"}
-            text="동의하고 계속"
-            textColor={checkAllRequire ? "#121212" : "#666666"}
-            onPress={access}
-            disabled={!checkAllRequire}
-          />
-        </View>
-      </ScrollView>
-    </View>
+          <View style={styles.bottomContainer}>
+            <AccessButton
+              backgroundColor={checkAllRequire ? "#F2F2F2" : "#1E1E1E"}
+              text="동의하고 계속"
+              textColor={checkAllRequire ? "#121212" : "#666666"}
+              onPress={access}
+              disabled={!checkAllRequire}
+            />
+          </View>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ffffff",
+  },
   phone: {
     paddingTop: 100,
-    width: 402,
-    height: 874,
+    width: "100%",
+    height: "100%",
+    maxWidth: 402,
+    maxHeight: 874,
     backgroundColor: "#000000",
     borderRadius: 48,
     display: "flex",
@@ -178,13 +192,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   topContent: {
+    width: "100%",
+    paddingHorizontal: 24,
     alignItems: "center",
   },
   bottomContainer: {
     width: "100%",
     alignItems: "center",
-    paddingTop: 24,
-    paddingBottom: 42,
   },
   note: {
     fontFamily: "Pretendard",
@@ -196,11 +210,12 @@ const styles = StyleSheet.create({
   },
   noteContainer: {
     display: "flex",
-    width: 354,
+    width: "100%",
+    maxWidth: 354,
     flexDirection: "column",
     alignItems: "flex-start",
     marginTop: 17.09,
-    marginInline: 24,
+    marginBottom: 20,
   },
   checkAllBox: {
     width: 22,
@@ -218,9 +233,14 @@ const styles = StyleSheet.create({
   unCheck: {
     opacity: 0.4,
   },
+  checkAllTouchable: {
+    width: "100%",
+    maxWidth: 359,
+  },
   checkAllContainer: {
-    width: 359,
-    height: 54,
+    width: "100%",
+    maxWidth: 359,
+    minHeight: 54,
     backgroundColor: "#1A1A1A",
     display: "flex",
     flexDirection: "row",
@@ -239,8 +259,9 @@ const styles = StyleSheet.create({
     letterSpacing: -0.155,
   },
   titleContainer: {
-    width: 354,
-    height: 64.8,
+    width: "100%",
+    maxWidth: 354,
+    minHeight: 64.8,
     display: "flex",
     flexDirection: "column",
     gap: 8.8,

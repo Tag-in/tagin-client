@@ -1,10 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { Animated, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Animated,
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  TouchableOpacity,
+} from "react-native";
 
 interface accessButtonProps {
-  backgroundColor: string;
+  backgroundColor?: string;
   text: string;
   textColor: string;
+  textStyle?: StyleProp<TextStyle>;
   onPress?: () => void;
   disabled?: boolean;
 }
@@ -13,12 +20,15 @@ export default function AccessButton({
   backgroundColor,
   text,
   textColor,
+  textStyle,
   onPress,
   disabled,
 }: accessButtonProps) {
+  const bg = backgroundColor ?? "transparent";
+
   const [colors, setColors] = useState({
-    fromBg: backgroundColor,
-    toBg: backgroundColor,
+    fromBg: bg,
+    toBg: bg,
     fromText: textColor,
     toText: textColor,
   });
@@ -33,7 +43,7 @@ export default function AccessButton({
 
     setColors((prev) => ({
       fromBg: prev.toBg,
-      toBg: backgroundColor,
+      toBg: bg,
       fromText: prev.toText,
       toText: textColor,
     }));
@@ -43,7 +53,7 @@ export default function AccessButton({
       duration: 200,
       useNativeDriver: false,
     }).start();
-  }, [backgroundColor, textColor, progress]);
+  }, [bg, textColor, progress]);
 
   const animatedBg = progress.interpolate({
     inputRange: [0, 1],
@@ -62,7 +72,9 @@ export default function AccessButton({
       activeOpacity={0.8}
     >
       <Animated.View style={[styles.container, { backgroundColor: animatedBg }]}>
-        <Animated.Text style={[styles.text, { color: animatedText }]}>
+        <Animated.Text
+          style={[styles.text, textStyle, { color: animatedText }]}
+        >
           {text}
         </Animated.Text>
       </Animated.View>
@@ -75,9 +87,6 @@ const styles = StyleSheet.create({
     maxWidth: 354,
     width: "100%",
     height: 52,
-    marginTop: 24.43,
-    position: "absolute",
-    bottom: 0,
   },
   container: {
     width: "100%",
@@ -90,6 +99,6 @@ const styles = StyleSheet.create({
     fontFamily: "Pretendard",
     fontSize: 16,
     fontStyle: "normal",
-    fontWeight: 700,
+    fontWeight: "700",
   },
 });

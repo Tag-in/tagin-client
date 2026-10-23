@@ -1,61 +1,104 @@
 import AccessButton from "@/components/register/AccessButton";
 import Info from "@/components/register/Info";
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Linking,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const exampleInfo = [
-  { id: "nickname", title: "닉네임", text: "설정 안 함", plan: "" },
+  { id: "nickname", title: "닉네임", text: "", plan: "" },
   { id: "plan", title: "플랜", text: "무료", plan: "Pro 보기" },
 ];
 
 const Successs = () => {
+  const handleToShare = () => {
+    const url = "http://localhost:8081";
+    if (Platform.OS === "web") {
+      window.location.href = url;
+    } else {
+      Linking.openURL(url);
+    }
+  };
+
+  const handleToStart = () => {
+    const url = "http://localhost:8081";
+    if (Platform.OS === "web") {
+      window.location.href = url;
+    } else {
+      Linking.openURL(url);
+    }
+  };
   return (
-    <View style={styles.phone}>
-      <View style={styles.topContent}>
-        <View style={styles.successContainer}>
-          <View style={styles.checkContainer}>
-            <View style={styles.checkBackground}>
-              <Image
-                source={require("@/assets/images/icons/check-icon-black.svg")}
-              />
+    <SafeAreaView style={styles.screen}>
+      <View style={styles.phone}>
+        <View style={styles.topContent}>
+          <View style={styles.successContainer}>
+            <View style={styles.checkContainer}>
+              <View style={styles.checkBackground}>
+                <Image
+                  source={require("@/assets/images/icons/check-icon-black.svg")}
+                />
+              </View>
+            </View>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>준비됐어요</Text>
+              <Text style={styles.note}>
+                이제 아무 앱에서든 영상을 공유해 보세요. 공유 시트에서 이 앱을
+                고르면 바로 저장돼요.
+              </Text>
             </View>
           </View>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>준비됐어요</Text>
-            <Text style={styles.note}>
-              이제 아무 앱에서든 영상을 공유해 보세요. 공유 시트에서 이 앱을
-              고르면 바로 저장돼요.
-            </Text>
+          <View style={styles.infoContainer}>
+            {exampleInfo.map((e) => (
+              <Info key={e.id} title={e.title} text={e.text} plan={e.plan} />
+            ))}
           </View>
         </View>
-        <View style={styles.infoContainer}>
-          {exampleInfo.map((e) => (
-            <Info key={e.id} title={e.title} text={e.text} plan={e.plan} />
-          ))}
-        </View>
-      </View>
 
-      <View style={styles.bottomContainer}>
-        <View style={styles.buttonContainer}>
-          <AccessButton
-            backgroundColor="#F2F2F2"
-            text="시작하기"
-            textColor="#121212"
-          />
-        </View>
-        <View
-          style={{ height: 52, alignItems: "center", justifyContent: "center" }}
-        >
-          <Text style={styles.shareNote}>공유 방법 먼저 볼게요</Text>
+        <View style={styles.bottomContainer}>
+          <View style={styles.buttonContainer}>
+            <AccessButton
+              backgroundColor="#F2F2F2"
+              text="시작하기"
+              textColor="#121212"
+              onPress={handleToStart}
+            />
+          </View>
+          <View
+            style={{
+              height: 52,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <TouchableOpacity onPress={handleToShare}>
+              <Text style={styles.shareNote}>공유 방법 먼저 볼게요</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ffffff",
+  },
   phone: {
-    width: 402,
-    height: 874,
+    width: "100%",
+    height: "100%",
+    maxWidth: 402,
+    maxHeight: 874,
     backgroundColor: "#000000",
     borderRadius: 48,
     display: "flex",
@@ -65,6 +108,8 @@ const styles = StyleSheet.create({
   },
   topContent: {
     flex: 1,
+    width: "100%",
+    paddingHorizontal: 24,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -97,7 +142,8 @@ const styles = StyleSheet.create({
     borderRadius: 28,
   },
   checkContainer: {
-    width: 354,
+    width: "100%",
+    maxWidth: 354,
     display: "flex",
     flexDirection: "column",
   },
@@ -128,10 +174,13 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-start",
     justifyContent: "flex-start",
-    width: 354,
+    width: "100%",
+    maxWidth: 354,
     gap: 26,
   },
   infoContainer: {
+    width: "100%",
+    maxWidth: 354,
     marginTop: 34,
   },
 });
