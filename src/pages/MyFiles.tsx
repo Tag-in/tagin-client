@@ -4,6 +4,9 @@ import {
   deleteEntries,
   getFolderContents,
   getFolders,
+  moveEntries,
+  starEntries,
+  unstarEntries,
   type DriveFolder,
   type DriveFolderContents,
   type DriveItem,
@@ -11,6 +14,7 @@ import {
 import { DetailPanel } from "../components/DetailPanel";
 import { FolderTree } from "../components/FolderTree";
 import { MainColumn } from "../components/MainColumn";
+import { MoveDialog } from "../components/MoveDialog";
 import { useDriveChanged } from "../lib/driveEvents";
 import { downloadSelection } from "../lib/download";
 import styles from "../styles/pages/MyFiles.module.css";
@@ -28,6 +32,7 @@ interface Row {
   name: string;
   date: string;
   size: string;
+  starred: boolean;
   item?: DriveItem;
 }
 
@@ -38,6 +43,7 @@ const folderRow = (folder: DriveFolder): Row => ({
   name: folder.name,
   date: formatDate(folder.updatedAt),
   size: "—",
+  starred: folder.starredAt !== null,
 });
 
 const itemRow = (item: DriveItem): Row => ({
@@ -47,6 +53,7 @@ const itemRow = (item: DriveItem): Row => ({
   name: item.name,
   date: formatDate(item.createdAt),
   size: formatBytes(item.sizeBytes),
+  starred: item.starredAt !== null,
   item,
 });
 
@@ -79,6 +86,7 @@ const MyFiles = () => {
   });
   const [status, setStatus] = useState("");
   const [isBusy, setIsBusy] = useState(false);
+  const [isMoveOpen, setIsMoveOpen] = useState(false);
 
   useEffect(() => {
     let ignore = false;
@@ -136,6 +144,9 @@ const MyFiles = () => {
   const selectedRows = rows?.filter((row) => selectedKeys.has(row.key)) ?? [];
   const selectedFile =
     selectedRows.length === 1 ? selectedRows[0].item : undefined;
+  const allStarred =
+    selectedRows.length > 0 && selectedRows.every((row) => row.starred);
+  const hasItems = selectedRows.some((row) => row.type === "ITEM");
 
   const openFolder = (id: string) => {
     setStatus("");
@@ -148,6 +159,8 @@ const MyFiles = () => {
     else next.add(key);
     setSelection({ folderId, keys: next });
   };
+
+  const clearSelection = () => setSelection({ folderId, keys: new Set() });
 
   const toSelection = () => ({
     itemIds: selectedRows.filter((r) => r.type === "ITEM").map((r) => r.id),
@@ -179,10 +192,35 @@ const MyFiles = () => {
       ),
     );
 
+  const handleStar = () =>
+    runAction(async () => {
+      const result = allStarred
+        ? await unstarEntries(toSelection())
+        : await starEntries(toSelection());
+      reload();
+      return `${result.itemCount + result.folderCount}개를 중요 ${allStarred ? "해제" : "표시"}했습니다.`;
+    });
+
+  const handleMove = (targetFolderId: string | null) =>
+    runAction(async () => {
+      const results = await moveEntries(toSelection(), targetFolderId, "RENAME");
+      setIsMoveOpen(false);
+      clearSelection();
+      reload();
+      const moved = results.filter((r) => r.status === "MOVED");
+      const renamed = moved.filter((r) => r.renamedTo);
+      return (
+        `${moved.length}개를 이동했습니다.` +
+        (renamed.length
+          ? ` 이름이 겹쳐 바꿨습니다: ${renamed.map((r) => r.renamedTo).join(", ")}`
+          : "")
+      );
+    });
+
   const handleDelete = () =>
     runAction(async () => {
       await deleteEntries(toSelection());
-      setSelection({ folderId, keys: new Set() });
+      clearSelection();
       reload();
       return `${selectedRows.length}개를 휴지통으로 보냈습니다.`;
     });
@@ -222,6 +260,14 @@ const MyFiles = () => {
             <button
               type="button"
               className={styles.button}
+              disabled={isBusy}
+              onClick={handleStar}
+            >
+              {allStarred ? "중요 해제" : "중요 표시"}
+            </button>
+            <button
+              type="button"
+              className={styles.button}
               disabled
               title="준비 중입니다"
             >
@@ -230,8 +276,14 @@ const MyFiles = () => {
             <button
               type="button"
               className={styles.button}
-              disabled
-              title="준비 중입니다"
+              disabled={isBusy}
+              onClick={() => {
+                if (selectedRows.length === 0) {
+                  setStatus("먼저 항목을 선택하세요.");
+                  return;
+                }
+                setIsMoveOpen(true);
+              }}
             >
               이동
             </button>
@@ -248,12 +300,6 @@ const MyFiles = () => {
             </span>
             {status && <span className={styles.status}>{status}</span>}
             <div className={styles.spacer} />
-            <button type="button" className={styles.button}>
-              정렬: 이름 ▾
-            </button>
-            <button type="button" className={styles.button}>
-              그리드
-            </button>
           </div>
           <div className={styles.table}>
             <div className={`${styles.row} ${styles.headerRow}`}>
@@ -302,6 +348,14 @@ const MyFiles = () => {
                       />
                     )}
                     <span className={styles.fileName}>{row.name}</span>
+                    {row.starred && (
+                      <img
+                        src="/assets/icon/star.svg"
+                        alt="중요"
+                        title="중요"
+                        className={styles.rowIcon}
+                      />
+                    )}
                   </div>
                   <span className={`${styles.cell} ${styles.ownerCol}`}>
                     나
@@ -332,7 +386,22 @@ const MyFiles = () => {
             ),
           }}
           location={pathNames.join(" › ")}
-          onClose={() => setSelection({ folderId, keys: new Set() })}
+          onClose={clearSelection}
+        />
+      )}
+      {isMoveOpen && (
+        <MoveDialog
+          folders={folders.list ?? []}
+          disabledIds={
+            new Set([
+              ...selectedRows.filter((r) => r.type === "FOLDER").map((r) => r.id),
+              ...(isRoot ? [] : [folderId]),
+            ])
+          }
+          allowRoot={!hasItems && !isRoot}
+          isBusy={isBusy}
+          onClose={() => setIsMoveOpen(false)}
+          onMove={handleMove}
         />
       )}
     </>

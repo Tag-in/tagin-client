@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
-import { getTrash, restoreEntries, type TrashList } from "../api/drive";
+import {
+  getTrash,
+  purgeTrash,
+  restoreEntries,
+  type TrashList,
+} from "../api/drive";
 import { MainColumn } from "../components/MainColumn";
-import { useDriveChanged } from "../lib/driveEvents";
+import { notifyDriveChanged, useDriveChanged } from "../lib/driveEvents";
 import styles from "../styles/pages/Trash.module.css";
 import { formatBytes, formatDate } from "../utils/format";
 
@@ -59,7 +64,12 @@ const Trash = () => {
     });
   };
 
-  const handleRestore = async () => {
+  const selection = () => ({
+    itemIds: selectedEntries.filter((e) => e.type === "ITEM").map((e) => e.id),
+    folderIds: selectedEntries.filter((e) => e.type === "FOLDER").map((e) => e.id),
+  });
+
+  const runAction = async (action: () => Promise<string | void>) => {
     if (selectedEntries.length === 0) {
       setStatus("먼저 항목을 선택하세요.");
       return;
@@ -67,27 +77,49 @@ const Trash = () => {
     setIsBusy(true);
     setStatus("");
     try {
-      const results = await restoreEntries({
-        itemIds: selectedEntries.filter((e) => e.type === "ITEM").map((e) => e.id),
-        folderIds: selectedEntries
-          .filter((e) => e.type === "FOLDER")
-          .map((e) => e.id),
-      });
-      const renamed = results.filter((r) => r.renamedTo);
-      setStatus(
-        `${results.length}개를 복원했습니다.` +
-          (renamed.length
-            ? ` 이름이 겹쳐 바꿨습니다: ${renamed.map((r) => r.renamedTo).join(", ")}`
-            : ""),
-      );
-      setSelected(new Set());
-      reload();
+      const message = await action();
+      if (message) setStatus(message);
     } catch (e) {
-      setStatus(e instanceof Error ? e.message : "복원하지 못했습니다.");
+      setStatus(e instanceof Error ? e.message : "요청에 실패했습니다.");
     } finally {
       setIsBusy(false);
     }
   };
+
+  const handleRestore = () =>
+    runAction(async () => {
+      const results = await restoreEntries(selection());
+      const renamed = results.filter((r) => r.renamedTo);
+      setSelected(new Set());
+      notifyDriveChanged();
+      return (
+        `${results.length}개를 복원했습니다.` +
+        (renamed.length
+          ? ` 이름이 겹쳐 바꿨습니다: ${renamed.map((r) => r.renamedTo).join(", ")}`
+          : "")
+      );
+    });
+
+  const handlePurge = () =>
+    runAction(async () => {
+      const count = selectedEntries.length;
+      if (
+        !window.confirm(
+          `선택한 ${count}개를 영구 삭제합니다. 폴더는 안의 항목까지 함께 지워지며 되돌릴 수 없습니다.`,
+        )
+      ) {
+        return;
+      }
+      const result = await purgeTrash(selection());
+      setSelected(new Set());
+      notifyDriveChanged();
+      return (
+        `파일 ${result.purgedItemCount}개, 폴더 ${result.purgedFolderCount}개를 영구 삭제했습니다.` +
+        (result.failedItemCount
+          ? ` ${result.failedItemCount}개는 지우지 못해 휴지통에 남았습니다.`
+          : "")
+      );
+    });
 
   return (
     <MainColumn>
@@ -135,6 +167,13 @@ const Trash = () => {
                       className={styles.rowIcon}
                     />
                   )}
+                  {entry.kind === "LINK" && (
+                    <img
+                      src="/assets/icon/link.svg"
+                      alt=""
+                      className={styles.rowIcon}
+                    />
+                  )}
                   <span className={styles.fileName}>{entry.name}</span>
                 </div>
                 <span className={`${styles.cell} ${styles.locationCol}`}>
@@ -162,8 +201,8 @@ const Trash = () => {
           <button
             type="button"
             className={styles.button}
-            disabled
-            title="보관 기간이 지나면 자동으로 영구 삭제됩니다"
+            disabled={isBusy}
+            onClick={handlePurge}
           >
             영구 삭제
           </button>

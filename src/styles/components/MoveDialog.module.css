@@ -1,0 +1,54 @@
+.list {
+  width: 100%;
+  display: flex;
+  max-height: 360px;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid #2c2c2c;
+}
+
+.option {
+  display: flex;
+  width: 100%;
+  height: 40px;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #e2e2e2;
+  font-size: 14px;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.option:hover:not(:disabled) {
+  background: #262626;
+}
+
+.option:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.optionActive,
+.optionActive:hover:not(:disabled) {
+  background: rgba(99, 102, 241, 0.28);
+  font-weight: 700;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.hint {
+  color: #a0a0a0;
+  font-size: 13px;
+  font-weight: 300;
+}

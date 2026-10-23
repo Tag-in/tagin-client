@@ -1,4 +1,6 @@
-import { authFetch } from './client'
+import { ApiError, authFetch, postJson, readJson } from './client'
+
+export { ApiError as DriveApiError }
 
 export type DriveItemKind = 'FILE' | 'LINK'
 
@@ -11,10 +13,17 @@ export interface DriveItem {
     sizeBytes: number | null
     url: string | null
     summary: string | null
+    // 중요 표시한 시각. 표시하지 않았으면 null
+    starredAt: string | null
     createdAt: string
 }
 
-export interface DriveSearchItem extends DriveItem {
+// 최근·중요 목록처럼 여러 폴더의 항목을 한 번에 보여줄 때 폴더 이름이 함께 온다.
+export interface DriveItemWithFolder extends DriveItem {
+    folderName: string
+}
+
+export interface DriveSearchItem extends Omit<DriveItem, 'starredAt'> {
     folderName: string
     similarity: number
 }
@@ -24,6 +33,7 @@ export interface DriveFolder {
     name: string
     parentId: string | null
     itemCount: number
+    starredAt: string | null
     createdAt: string
     updatedAt: string
 }
@@ -72,36 +82,41 @@ export interface RestoreResult {
     renamedTo: string | null
 }
 
-export class DriveApiError extends Error {
-    readonly status: number
-    readonly body: Record<string, unknown>
-
-    constructor(status: number, message: string, body: Record<string, unknown>) {
-        super(message)
-        this.status = status
-        this.body = body
-    }
+export interface PurgeResult {
+    purgedItemCount: number
+    purgedFolderCount: number
+    // 스토리지 객체를 지우지 못해 휴지통에 남은 파일 수 (보관 기간 후 자동 삭제가 재시도)
+    failedItemCount: number
 }
 
-// 응답 본문을 읽고, 실패면 서버 메시지로 DriveApiError를 던진다.
-const readJson = async <T>(response: Response, fallback: string): Promise<T> => {
-    const text = await response.text()
-    const data = text ? JSON.parse(text) : {}
-
-    if (!response.ok) {
-        const message = Array.isArray(data.message) ? data.message.join(', ') : data.message
-        throw new DriveApiError(response.status, message ?? `${fallback} (${response.status})`, data)
-    }
-
-    return data
+export interface StarredList {
+    folders: DriveFolder[]
+    items: DriveItemWithFolder[]
 }
 
-const postJson = (path: string, body: unknown) =>
-    authFetch(path, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-    })
+export interface StarResult {
+    itemCount: number
+    folderCount: number
+}
+
+export interface StorageUsage {
+    // 휴지통 파일 포함
+    usedBytes: number
+    trashBytes: number
+    limitBytes: number
+    itemCount: number
+}
+
+export type MoveConflictPolicy = 'FAIL' | 'SKIP' | 'RENAME'
+export type MoveStatus = 'MOVED' | 'UNCHANGED' | 'SKIPPED' | 'CONFLICT'
+
+export interface MoveResult {
+    type: DriveEntryType
+    id: string
+    name: string
+    status: MoveStatus
+    renamedTo: string | null
+}
 
 export interface DriveSearchParams {
     q: string
@@ -132,6 +147,33 @@ export const getFolderContents = async (folderId: string): Promise<DriveFolderCo
     return readJson(response, '폴더 내용을 불러오지 못했습니다.')
 }
 
+// 최근에 추가한 파일·링크 (휴지통 제외)
+export const getRecent = async (limit = 20): Promise<DriveItemWithFolder[]> => {
+    const response = await authFetch(`/api/drive/recent?limit=${limit}`)
+    const data = await readJson<{ items: DriveItemWithFolder[] }>(response, '최근 파일을 불러오지 못했습니다.')
+    return data.items
+}
+
+export const getStarred = async (): Promise<StarredList> => {
+    const response = await authFetch('/api/drive/starred')
+    return readJson(response, '중요 항목을 불러오지 못했습니다.')
+}
+
+export const starEntries = async (selection: DriveSelection): Promise<StarResult> => {
+    const response = await postJson('/api/drive/star', selection)
+    return readJson(response, '중요 표시하지 못했습니다.')
+}
+
+export const unstarEntries = async (selection: DriveSelection): Promise<StarResult> => {
+    const response = await postJson('/api/drive/unstar', selection)
+    return readJson(response, '중요 표시를 해제하지 못했습니다.')
+}
+
+export const getStorage = async (): Promise<StorageUsage> => {
+    const response = await authFetch('/api/drive/storage')
+    return readJson(response, '저장공간 정보를 불러오지 못했습니다.')
+}
+
 // folderId가 없으면 서버가 내용이 가장 비슷한 폴더에 넣거나 새 폴더를 만든다.
 export const uploadFile = async (file: File, folderId?: string): Promise<UploadResult> => {
     const body = new FormData()
@@ -145,6 +187,17 @@ export const uploadFile = async (file: File, folderId?: string): Promise<UploadR
 export const uploadLink = async (url: string, folderId?: string): Promise<UploadResult> => {
     const response = await postJson('/api/drive/links', { url, folderId })
     return readJson(response, '링크를 저장하지 못했습니다.')
+}
+
+// 대상 폴더로 이동한다. targetFolderId가 null이면 최상위 (폴더만 가능). 이름이 겹치면 onConflict대로 처리한다.
+export const moveEntries = async (
+    selection: DriveSelection,
+    targetFolderId: string | null,
+    onConflict: MoveConflictPolicy = 'RENAME',
+): Promise<MoveResult[]> => {
+    const response = await postJson('/api/drive/move', { ...selection, targetFolderId, onConflict })
+    const data = await readJson<{ results: MoveResult[] }>(response, '이동하지 못했습니다.')
+    return data.results
 }
 
 // 휴지통으로 보낸다. 폴더는 하위 폴더·항목까지 함께 간다.
@@ -163,6 +216,12 @@ export const restoreEntries = async (selection: DriveSelection): Promise<Restore
 export const getTrash = async (): Promise<TrashList> => {
     const response = await authFetch('/api/drive/trash')
     return readJson(response, '휴지통을 불러오지 못했습니다.')
+}
+
+// 휴지통의 항목을 되돌릴 수 없게 바로 지운다.
+export const purgeTrash = async (selection: DriveSelection): Promise<PurgeResult> => {
+    const response = await postJson('/api/drive/trash/purge', selection)
+    return readJson(response, '영구 삭제하지 못했습니다.')
 }
 
 // 스토리지에서 바로 내려받는 5분짜리 임시 URL

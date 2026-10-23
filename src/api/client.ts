@@ -39,3 +39,34 @@ export const authFetch = async (path: string, init: RequestInit = {}): Promise<R
     window.location.assign('/login')
     return response
 }
+
+export class ApiError extends Error {
+    readonly status: number
+    readonly body: Record<string, unknown>
+
+    constructor(status: number, message: string, body: Record<string, unknown>) {
+        super(message)
+        this.status = status
+        this.body = body
+    }
+}
+
+// 응답 본문을 읽고, 실패면 서버 메시지로 ApiError를 던진다.
+export const readJson = async <T>(response: Response, fallback: string): Promise<T> => {
+    const text = await response.text()
+    const data = text ? JSON.parse(text) : {}
+
+    if (!response.ok) {
+        const message = Array.isArray(data.message) ? data.message.join(', ') : data.message
+        throw new ApiError(response.status, message ?? `${fallback} (${response.status})`, data)
+    }
+
+    return data
+}
+
+export const postJson = (path: string, body: unknown) =>
+    authFetch(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+    })
