@@ -1,7 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router'
-import { Header } from './components/Header.tsx'
 import { SideBar } from './components/SideBar.tsx'
 import Home from './pages/Home.tsx'
 import Important from './pages/Important.tsx'
@@ -16,16 +15,13 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <div className={styles.container}>
         <SideBar />
-        <div className={styles.main}>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/files" element={<MyFiles />} />
-            <Route path="/recent" element={<Recent />} />
-            <Route path="/important" element={<Important />} />
-            <Route path="/trash" element={<Trash />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/files" element={<MyFiles />} />
+          <Route path="/recent" element={<Recent />} />
+          <Route path="/important" element={<Important />} />
+          <Route path="/trash" element={<Trash />} />
+        </Routes>
       </div>
     </BrowserRouter>
   </StrictMode>,

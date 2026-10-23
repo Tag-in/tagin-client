@@ -3,6 +3,7 @@ import styles from '../styles/components/Header.module.css'
 
 const DEFAULT_PLACEHOLDER = '파일, 폴더 검색'
 const PLACEHOLDERS: Record<string, string> = {
+    '/files': '이 폴더에서 검색',
     '/trash': '휴지통에서 검색',
 }
 

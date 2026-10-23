@@ -1,7 +1,12 @@
 import { ContentPanel } from "../components/ContentPanel";
+import { MainColumn } from "../components/MainColumn";
 
 const Important = () => {
-  return <ContentPanel title="중요" />;
+  return (
+    <MainColumn>
+      <ContentPanel title="중요" />
+    </MainColumn>
+  );
 };
 
 export default Important;

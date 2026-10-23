@@ -1,0 +1,150 @@
+.container {
+  display: flex;
+  width: 360px;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 24px;
+  background: #1b1b1b;
+}
+
+.header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+}
+
+.name {
+  min-width: 0;
+  flex: 1 0 0;
+  color: #e2e2e2;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.close {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #a0a0a0;
+  font-size: 18px;
+}
+
+.tabs {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.tab {
+  display: flex;
+  height: 40px;
+  min-width: 0;
+  flex: 1 0 0;
+  padding: 0 16px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid #a0a0a0;
+  background: transparent;
+  color: #e2e2e2;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.tabActive {
+  background: #1e1e1e;
+  font-weight: 700;
+}
+
+.preview {
+  display: flex;
+  width: 100%;
+  height: 200px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px solid #2c2c2c;
+  background: #1e1e1e;
+}
+
+.previewText {
+  color: #a0a0a0;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.infoList {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  color: #a0a0a0;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.value {
+  color: #e2e2e2;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.share {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shareRow {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.spacer {
+  height: 1px;
+  min-width: 1px;
+  flex: 1 0 0;
+}
+
+.shareButton {
+  display: flex;
+  height: 40px;
+  flex-shrink: 0;
+  padding: 0 16px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid #a0a0a0;
+  background: transparent;
+  color: #e2e2e2;
+  font-size: 14px;
+  font-weight: 400;
+}

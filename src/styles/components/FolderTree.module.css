@@ -1,0 +1,72 @@
+.container {
+  display: flex;
+  width: 300px;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px 16px;
+  background: #1b1b1b;
+}
+
+.title {
+  color: #a0a0a0;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.tree {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item {
+  display: flex;
+  height: 40px;
+  padding-right: 8px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  color: #a0a0a0;
+}
+
+.arrow {
+  width: 12px;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  border: 1.5px solid #a0a0a0;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.active {
+  background: #1e1e1e;
+}
+
+.active .icon {
+  background: #a0a0a0;
+}
+
+.active .name {
+  color: #e2e2e2;
+  font-weight: 700;
+}

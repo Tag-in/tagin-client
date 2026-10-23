@@ -1,7 +1,12 @@
 import { ContentPanel } from "../components/ContentPanel";
+import { MainColumn } from "../components/MainColumn";
 
 const Trash = () => {
-  return <ContentPanel title="휴지통" />;
+  return (
+    <MainColumn>
+      <ContentPanel title="휴지통" />
+    </MainColumn>
+  );
 };
 
 export default Trash;
