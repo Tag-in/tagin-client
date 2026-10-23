@@ -194,8 +194,6 @@ const styles = StyleSheet.create({
   bottomContainer: {
     width: "100%",
     alignItems: "center",
-    paddingTop: 24,
-    paddingBottom: 42,
   },
   note: {
     fontFamily: "Pretendard",
