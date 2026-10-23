@@ -1,11 +1,38 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
+import { loginWithGoogle, SIGNUP_REQUIRED } from "../api/auth";
+import { getGoogleIdToken } from "../lib/googleAuth";
+import { saveTokens } from "../lib/tokenStorage";
 import styles from "../styles/pages/Login.module.css";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  // TODO: 소셜 로그인 API 연동 전 임시로 홈으로 이동
-  const handleLogin = () => navigate("/");
+  const [error, setError] = useState("");
+
+  const handleGoogleLogin = async () => {
+    setError("");
+    try {
+      const idToken = await getGoogleIdToken();
+      const { status, accessToken, refreshToken } =
+        await loginWithGoogle(idToken);
+
+      if (status === SIGNUP_REQUIRED) {
+        navigate("/signup", { state: { idToken } });
+        return;
+      }
+      if (!accessToken || !refreshToken) {
+        throw new Error("로그인 응답에서 토큰을 찾을 수 없습니다.");
+      }
+      saveTokens(accessToken, refreshToken);
+      navigate("/", { replace: true });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "로그인에 실패했습니다.");
+    }
+  };
+
+  // TODO: Apple 로그인 API 연동 전 임시로 홈으로 이동
+  const handleAppleLogin = () => navigate("/");
 
   return (
     <div className={styles.container}>
@@ -23,7 +50,7 @@ const Login = () => {
           <button
             type="button"
             className={`${styles.button} ${styles.google}`}
-            onClick={handleLogin}
+            onClick={handleGoogleLogin}
           >
             <img src="/assets/icon/google.svg" alt="" className={styles.icon} />
             Google로 계속하기
@@ -31,12 +58,13 @@ const Login = () => {
           <button
             type="button"
             className={`${styles.button} ${styles.apple}`}
-            onClick={handleLogin}
+            onClick={handleAppleLogin}
           >
             <img src="/assets/icon/apple.svg" alt="" className={styles.icon} />
             Apple로 계속하기
           </button>
         </div>
+        {error && <p className={styles.error}>{error}</p>}
         <p className={styles.terms}>
           계속하면 서비스 이용약관 및 개인정보 처리방침에
           <br />

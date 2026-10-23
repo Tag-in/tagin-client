@@ -95,3 +95,9 @@
   line-height: 1.5;
   text-align: center;
 }
+
+.error {
+  color: #e5484d;
+  font-size: 14px;
+  text-align: center;
+}
