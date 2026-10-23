@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Terms = () => {
   const [checks, setChecks] = useState<Record<string, boolean>>({});
@@ -91,74 +92,84 @@ const Terms = () => {
   };
 
   return (
-    <View style={styles.phone}>
-      <ScrollView
-        style={styles.scroll}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.topContent}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>약관에 동의해 주세요</Text>
-            <Text style={styles.titleNote}>
-              필수 항목에 동의하면 바로 시작할 수 있어요.
-            </Text>
-          </View>
-          <TouchableOpacity onPress={toggleSetCheckAll}>
-            <View style={styles.checkAllContainer}>
-              <View
-                style={[
-                  styles.checkAllBox,
-                  checkAll ? styles.check : styles.unCheck,
-                ]}
-              >
-                <Image
-                  source={require("@/assets/images/icons/check-icon.svg")}
-                  style={checkAll ? undefined : styles.unCheck}
-                />
-              </View>
-              <Text style={styles.checkAllText}>전체 동의</Text>
+    <SafeAreaView style={styles.screen}>
+      <View style={styles.phone}>
+        <ScrollView
+          style={styles.scroll}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.topContent}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>약관에 동의해 주세요</Text>
+              <Text style={styles.titleNote}>
+                필수 항목에 동의하면 바로 시작할 수 있어요.
+              </Text>
             </View>
-          </TouchableOpacity>
-          {ex.map((e) => (
-            <Term
-              key={e.id}
-              isRequire={e.isRequire}
-              text={e.text}
-              text_detail={e.text_detail}
-              isCheck={e.isCheck}
-              isDetail={e.isDetail}
-              onToggle={e.onToggle}
-              onDetailTextToggle={e.onDetailTextToggle}
-            />
-          ))}
-          <View style={styles.noteContainer}>
-            <Text style={styles.note}>
-              만 14세 미만 보호자 동의가 필요합니다. 선택 항목에 동의하지 않아도
-              서비스를 이용할 수 있어요.
-            </Text>
+            <TouchableOpacity onPress={toggleSetCheckAll}>
+              <View style={styles.checkAllContainer}>
+                <View
+                  style={[
+                    styles.checkAllBox,
+                    checkAll ? styles.check : styles.unCheck,
+                  ]}
+                >
+                  <Image
+                    source={require("@/assets/images/icons/check-icon.svg")}
+                    style={checkAll ? undefined : styles.unCheck}
+                  />
+                </View>
+                <Text style={styles.checkAllText}>전체 동의</Text>
+              </View>
+            </TouchableOpacity>
+            {ex.map((e) => (
+              <Term
+                key={e.id}
+                isRequire={e.isRequire}
+                text={e.text}
+                text_detail={e.text_detail}
+                isCheck={e.isCheck}
+                isDetail={e.isDetail}
+                onToggle={e.onToggle}
+                onDetailTextToggle={e.onDetailTextToggle}
+              />
+            ))}
+            <View style={styles.noteContainer}>
+              <Text style={styles.note}>
+                만 14세 미만 보호자 동의가 필요합니다. 선택 항목에 동의하지
+                않아도 서비스를 이용할 수 있어요.
+              </Text>
+            </View>
           </View>
-        </View>
 
-        <View style={styles.bottomContainer}>
-          <AccessButton
-            backgroundColor={checkAllRequire ? "#F2F2F2" : "#1E1E1E"}
-            text="동의하고 계속"
-            textColor={checkAllRequire ? "#121212" : "#666666"}
-            onPress={access}
-            disabled={!checkAllRequire}
-          />
-        </View>
-      </ScrollView>
-    </View>
+          <View style={styles.bottomContainer}>
+            <AccessButton
+              backgroundColor={checkAllRequire ? "#F2F2F2" : "#1E1E1E"}
+              text="동의하고 계속"
+              textColor={checkAllRequire ? "#121212" : "#666666"}
+              onPress={access}
+              disabled={!checkAllRequire}
+            />
+          </View>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ffffff",
+  },
   phone: {
     paddingTop: 100,
-    width: 402,
-    height: 874,
+    width: "100%",
+    height: "100%",
+    maxWidth: 402,
+    maxHeight: 874,
     backgroundColor: "#000000",
     borderRadius: 48,
     display: "flex",
