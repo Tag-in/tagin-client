@@ -1,4 +1,12 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useRef } from "react";
+import {
+  Animated,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface TermProps {
   isRequire: boolean;
@@ -18,6 +26,21 @@ const Term = ({
   onToggle,
   onDetailTextToggle,
 }: TermProps) => {
+  const rotation = useRef(new Animated.Value(isDetail ? 1 : 0)).current;
+
+  useEffect(() => {
+    Animated.timing(rotation, {
+      toValue: isDetail ? 1 : 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  }, [isDetail, rotation]);
+
+  const arrowRotate = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "90deg"],
+  });
+
   return (
     <View style={styles.root}>
       <View
@@ -54,9 +77,9 @@ const Term = ({
                 <Text style={styles.text}>{text}</Text>
               </Text>
             </View>
-            <Image
+            <Animated.Image
               source={require("@/assets/images/icons/arrow-icon.svg")}
-              style={styles.arrow}
+              style={[styles.arrow, { transform: [{ rotate: arrowRotate }] }]}
             />
           </View>
         </TouchableOpacity>
