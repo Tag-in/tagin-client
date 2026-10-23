@@ -1,30 +1,39 @@
 .container {
   display: flex;
-  max-width: 1640px;
   width: 100%;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 0 24px;
-  height: 76px;
-  background: #1B1B1B;
+  padding-right: 16px;
+  padding-top: 30px;
+  padding-bottom: 18px;
+  background: #1b1b1b;
 }
 
 .searchWrap {
-  display: flex;
   max-width: 880px;
   width: 100%;
+  min-width: 0;
   padding: 14px 16px;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
   border-radius: 8px;
   border: 1px solid #a0a0a0;
   background: #1b1b1b;
+  color: #f2f2f2;
+  font-size: 14px;
+  outline: none;
+}
+
+.searchWrap::placeholder {
+  color: #a0a0a0;
+}
+
+.searchWrap:focus {
+  border-color: #6e66e8;
 }
 
 .actionWrap {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: 16px;
 }
@@ -44,7 +53,7 @@
 
 .profile {
   display: flex;
-  box-sizing: border-box;
+  flex-shrink: 0;
   width: 40px;
   height: 40px;
   justify-content: center;

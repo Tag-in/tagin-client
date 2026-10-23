@@ -1,6 +1,5 @@
 .container {
   display: flex;
-  box-sizing: border-box;
   width: 268px;
   flex-shrink: 0;
   flex-direction: column;
@@ -16,7 +15,7 @@
 .logo {
   display: block;
   width: 100%;
-  max-width: 196px;
+  max-width: 166px;
   height: auto;
 }
 
@@ -39,6 +38,11 @@
   font-size: 14px;
   font-family: inherit;
   cursor: pointer;
+  text-align: left;
+}
+
+.menu:hover {
+  background: #262626;
 }
 
 .active {
@@ -54,6 +58,11 @@
   mask-repeat: no-repeat;
   mask-position: center;
   mask-size: contain;
+}
+
+.active,
+.active:hover {
+  background: #343252;
 }
 
 .active .icon {
