@@ -10,6 +10,7 @@ import Important from './pages/Important.tsx'
 import Login from './pages/Login.tsx'
 import MyFiles from './pages/MyFiles.tsx'
 import Recent from './pages/Recent.tsx'
+import Search from './pages/Search.tsx'
 import Signup from './pages/Signup.tsx'
 import Trash from './pages/Trash.tsx'
 import './styles/global.css'
@@ -30,6 +31,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/recent" element={<Recent />} />
             <Route path="/important" element={<Important />} />
             <Route path="/trash" element={<Trash />} />
+            <Route path="/search" element={<Search />} />
           </Route>
         </Route>
       </Routes>
