@@ -1,5 +1,9 @@
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
+import { getStorage, type StorageUsage } from "../api/drive";
+import { useDriveChanged } from "../lib/driveEvents";
 import styles from "../styles/components/SideBar.module.css";
+import { formatBytes } from "../utils/format";
 
 const MENUS = [
   { path: "/", label: "홈", icon: "home" },
@@ -9,14 +13,30 @@ const MENUS = [
   { path: "/trash", label: "휴지통", icon: "trash" },
 ];
 
-const USED_GB = 3.2;
-const TOTAL_GB = 15;
-
 interface SideBarProps {
   onUpload: () => void;
 }
 
 export const SideBar = ({ onUpload }: SideBarProps) => {
+  const [storage, setStorage] = useState<StorageUsage | null>(null);
+  const [version, setVersion] = useState(0);
+  // 업로드·삭제·영구 삭제 뒤 사용량을 다시 읽는다.
+  useDriveChanged(() => setVersion((v) => v + 1));
+
+  useEffect(() => {
+    let ignore = false;
+    getStorage()
+      .then((usage) => !ignore && setStorage(usage))
+      .catch(() => !ignore && setStorage(null));
+    return () => {
+      ignore = true;
+    };
+  }, [version]);
+
+  const percent = storage
+    ? Math.min(100, (storage.usedBytes / storage.limitBytes) * 100)
+    : 0;
+
   return (
     <aside className={styles.container}>
       <h1 className={styles.logoWrap}>
@@ -47,15 +67,21 @@ export const SideBar = ({ onUpload }: SideBarProps) => {
       >
         + 새로 만들기 / 업로드
       </button>
-      <div className={styles.storage}>
+      <div
+        className={styles.storage}
+        title={
+          storage && storage.trashBytes > 0
+            ? `휴지통 ${formatBytes(storage.trashBytes)} 포함`
+            : undefined
+        }
+      >
         <div className={styles.storageBar}>
-          <div
-            className={styles.storageFill}
-            style={{ width: `${(USED_GB / TOTAL_GB) * 100}%` }}
-          />
+          <div className={styles.storageFill} style={{ width: `${percent}%` }} />
         </div>
         <span className={styles.storageText}>
-          저장공간 {USED_GB}GB / {TOTAL_GB}GB 사용
+          {storage
+            ? `저장공간 ${formatBytes(storage.usedBytes)} / ${formatBytes(storage.limitBytes)} 사용`
+            : "저장공간 정보를 불러오는 중..."}
         </span>
       </div>
     </aside>
